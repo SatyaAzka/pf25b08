@@ -1,4 +1,4 @@
-# E234211 - Programming Fundamental Mini Project
+# ES234211 - Programming Fundamental Mini Project
 Class B, Group 8
 # Team Members:
 1. 502624188, Muhammad Farras Fadhillah Hasan
