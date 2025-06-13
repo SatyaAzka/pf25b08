@@ -8,8 +8,8 @@ public class TTTGraphics extends JFrame {
    private static final long serialVersionUID = 1L; // to prevent serializable warning
 
    // Define named constants for the game board
-   public static final int ROWS = 3;  // ROWS x COLS cells
-   public static final int COLS = 3;
+   public static final int ROWS = 6;  // ROWS x COLS cells
+   public static final int COLS = 7;
 
    // Define named constants for the drawing graphics
    public static final int CELL_SIZE = 120; // cell width/height (square)
