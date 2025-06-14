@@ -8,8 +8,8 @@ public class TTTConsoleNonOO {
     // Define named constants for:
     //  1. Player: using CROSS and NOUGHT
     //  2. Cell contents: using CROSS, NOUGHT and NO_SEED
-    public static final int CROSS = 0;
-    public static final int NOUGHT = 1;
+    public static final int CROSS   = 0;
+    public static final int NOUGHT  = 1;
     public static final int NO_SEED = 2;
 
     // The game board
@@ -20,57 +20,38 @@ public class TTTConsoleNonOO {
     public static int currentPlayer;  // CROSS, NOUGHT
 
     // Define named constants to represent the various states of the game
-    public static final int PLAYING = 0;
-    public static final int DRAW = 1;
-    public static final int CROSS_WON = 2;
+    public static final int PLAYING    = 0;
+    public static final int DRAW       = 1;
+    public static final int CROSS_WON  = 2;
     public static final int NOUGHT_WON = 3;
     // The current state of the game
     public static int currentState;
 
     public static Scanner in = new Scanner(System.in); // the input Scanner
 
-    /**
-     * The entry main method (the program starts here)
-     */
+    /** The entry main method (the program starts here) */
     public static void main(String[] args) {
-        do{
-            // Initialize the board, currentState and currentPlayer
-            initGame();
+        // Initialize the board, currentState and currentPlayer
+        initGame();
 
-            // Play the game once
-            do {
-                // currentPlayer makes a move
-                // Update board[selectedRow][selectedCol] and currentState
-                stepGame();
-                // Refresh the display
-                paintBoard();
-                // Print message if game over
-                if (currentState == CROSS_WON) {
-                    System.out.println("'X' won!");
-                } else if (currentState == NOUGHT_WON) {
-                    System.out.println("'O' won!");
-                } else if (currentState == DRAW) {
-                    System.out.println("It's a Draw!");
-                }
-                // Switch currentPlayer
-                currentPlayer = (currentPlayer == CROSS) ? NOUGHT : CROSS;
-            } while (currentState == PLAYING); // repeat if not game over
-            // Prompt the user whether to play again
-            boolean invalid=true;
-            do{
-                System.out.print("Play again (y/n)? ");
-                char ans = in.next().charAt(0);
-                if (ans == 'n' || ans == 'N') {
-                    System.out.println("Bye!");
-                    System.exit(0);  // terminate the program
-                } else if(ans == 'y' || ans == 'Y'){
-                    invalid = false;
-                } else{
-                    System.out.println("invalid input, try again!");
-                }
-            } while(invalid);
-
-        } while(true);
+        // Play the game once
+        do {
+            // currentPlayer makes a move
+            // Update board[selectedRow][selectedCol] and currentState
+            stepGame();
+            // Refresh the display
+            paintBoard();
+            // Print message if game over
+            if (currentState == CROSS_WON) {
+                System.out.println("'X' won!\nBye!");
+            } else if (currentState == NOUGHT_WON) {
+                System.out.println("'O' won!\nBye!");
+            } else if (currentState == DRAW) {
+                System.out.println("It's a Draw!\nBye!");
+            }
+            // Switch currentPlayer
+            currentPlayer = (currentPlayer == CROSS) ? NOUGHT : CROSS;
+        } while (currentState == PLAYING); // repeat if not game over
     }
 
     /** Initialize the board[][], currentState and currentPlayer for a new game*/
