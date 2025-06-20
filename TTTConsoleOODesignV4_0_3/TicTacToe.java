@@ -1,0 +1,18 @@
+package TTTConsoleOODesignV4_0_3;
+
+public class TicTacToe {
+
+    <html>
+<head>
+    <title>Tic Tac Toe</title>
+</head>
+<body>
+    <h1>Tic Tac Toe</h1>
+  <applet code="AppletMain.class" width="300" height="330" alt="Error Loading Applet?!">
+    Your browser does not seem to support &lt;APPLET&gt; tag!
+  </applet>
+</body>
+</html>
+
+    // ini dimasukkan ke file HTML nantinya
+}
