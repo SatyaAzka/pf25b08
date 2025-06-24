@@ -1,137 +1,185 @@
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-/**
- * Tic-Tac-Toe: Two-player Graphic version with better OO design.
- * The Board and Cell classes are separated in their own classes.
- */
-public class GameMain extends JPanel {
-   private static final long serialVersionUID = 1L; // to prevent serializable warning
+import java.util.*;
 
-   // Define named constants for the drawing graphics
-   public static final String TITLE = "Tic Tac Toe";
-   public static final Color COLOR_BG = Color.WHITE;
-   public static final Color COLOR_BG_STATUS = new Color(216, 216, 216);
-   public static final Color COLOR_CROSS = new Color(239, 105, 80);  // Red #EF6950
-   public static final Color COLOR_NOUGHT = new Color(64, 154, 225); // Blue #409AE1
-   public static final Font FONT_STATUS = new Font("OCR A Extended", Font.PLAIN, 14);
+public class AIPlayer {
+   public enum Difficulty {
+      EASY, HARD
+   }
 
-   // Define game objects
-   private Board board;         // the game board
-   private State currentState;  // the current state of the game
-   private Seed currentPlayer;  // the current player
-   private JLabel statusBar;    // for displaying status message
+   protected int ROWS = Board.ROWS;
+   protected int COLS = Board.COLS;
+   protected Cell[][] cells;
+   protected Seed mySeed;
+   protected Seed oppSeed;
+   private Difficulty difficulty;
 
-   /** Constructor to setup the UI and game components */
-   public GameMain() {
+   public AIPlayer(Board board, Difficulty difficulty) {
+      this.cells = board.cells;
+      this.difficulty = difficulty;
+   }
 
-      // This JPanel fires MouseEvent
-      super.addMouseListener(new MouseAdapter() {
-         @Override
-         public void mouseClicked(MouseEvent e) {  // mouse-clicked handler
-            int mouseX = e.getX();
-            int mouseY = e.getY();
-            // Get the row and column clicked
-            int row = mouseY / Cell.SIZE;
-            int col = mouseX / Cell.SIZE;
+   public void setSeed(Seed seed) {
+      this.mySeed = seed;
+      this.oppSeed = (mySeed == Seed.CROSS) ? Seed.NOUGHT : Seed.CROSS;
+   }
 
-            if (currentState == State.PLAYING) {
-               if (row >= 0 && row < Board.ROWS && col >= 0 && col < Board.COLS
-                       && board.cells[row][col].content == Seed.NO_SEED) {
-                  // Update cells[][] and return the new game state after the move
-                  currentState = board.stepGame(currentPlayer, row, col);
-                  // Play appropriate sound clip
-                  if (currentState == State.PLAYING) {
-                     SoundEffect.EAT_FOOD.play();
-                  } else if (currentState == State.DRAW) {
-                     SoundEffect.EXPLODE.play();
-                  }
-                  else{
-                     SoundEffect.DIE.play();
-                  }
-                  // Switch player
-                  currentPlayer = (currentPlayer == Seed.CROSS) ? Seed.NOUGHT : Seed.CROSS;
-               }
-            } else {        // game over
-               newGame();  // restart the game
+   public int[] move() {
+      if (difficulty == Difficulty.EASY) {
+         return moveEasy();
+      } else {
+         return moveHard();
+      }
+   }
+
+   private int[] moveEasy() {
+      List<int[]> emptyCells = new ArrayList<>();
+      for (int row = 0; row < ROWS; ++row) {
+         for (int col = 0; col < COLS; ++col) {
+            if (cells[row][col].content == Seed.NO_SEED) {
+               emptyCells.add(new int[]{row, col});
             }
-            // Refresh the drawing canvas
-            repaint();  // Callback paintComponent().
-         }
-      });
-
-      // Setup the status bar (JLabel) to display status message
-      statusBar = new JLabel();
-      statusBar.setFont(FONT_STATUS);
-      statusBar.setBackground(COLOR_BG_STATUS);
-      statusBar.setOpaque(true);
-      statusBar.setPreferredSize(new Dimension(300, 30));
-      statusBar.setHorizontalAlignment(JLabel.LEFT);
-      statusBar.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 12));
-
-      super.setLayout(new BorderLayout());
-      super.add(statusBar, BorderLayout.PAGE_END); // same as SOUTH
-      super.setPreferredSize(new Dimension(Board.CANVAS_WIDTH, Board.CANVAS_HEIGHT + 30));
-      // account for statusBar in height
-      super.setBorder(BorderFactory.createLineBorder(COLOR_BG_STATUS, 2, false));
-
-      // Set up Game
-      initGame();
-      newGame();
-   }
-
-   /** Initialize the game (run once) */
-   public void initGame() {
-      board = new Board();  // allocate the game-board
-   }
-
-   /** Reset the game-board contents and the current-state, ready for new game */
-   public void newGame() {
-      for (int row = 0; row < Board.ROWS; ++row) {
-         for (int col = 0; col < Board.COLS; ++col) {
-            board.cells[row][col].content = Seed.NO_SEED; // all cells empty
          }
       }
-      currentPlayer = Seed.CROSS;    // cross plays first
-      currentState = State.PLAYING;  // ready to play
-   }
 
-   /** Custom painting codes on this JPanel */
-   @Override
-   public void paintComponent(Graphics g) {  // Callback via repaint()
-      super.paintComponent(g);
-      setBackground(COLOR_BG); // set its background color
-      board.paint(g);  // ask the game board to paint itself
-
-      // Print status-bar message
-      if (currentState == State.PLAYING) {
-         statusBar.setForeground(Color.BLACK);
-         statusBar.setText((currentPlayer == Seed.CROSS) ? "Crocodilo's Turn" : "TungTungTungSahur's Turn");
-      } else if (currentState == State.DRAW) {
-         statusBar.setForeground(Color.RED);
-         statusBar.setText("It's a Draw! Click to play again.");
-      } else if (currentState == State.CROSS_WON) {
-         statusBar.setForeground(Color.RED);
-         statusBar.setText("'Crocodilo' Won! Click to play again.");
-      } else if (currentState == State.NOUGHT_WON) {
-         statusBar.setForeground(Color.RED);
-         statusBar.setText("'TungTungSahur' Won! Click to play again.");
+      if (!emptyCells.isEmpty()) {
+         return emptyCells.get(new Random().nextInt(emptyCells.size()));
+      } else {
+         return new int[]{-1, -1};  // no move available
       }
    }
 
-   /** The entry "main" method */
-   public static void main(String[] args) {
-      // Run GUI construction codes in Event-Dispatching thread for thread safety
-      javax.swing.SwingUtilities.invokeLater(new Runnable() {
-         public void run() {
-            JFrame frame = new JFrame(TITLE);
-            // Set the content-pane of the JFrame to an instance of main JPanel
-            frame.setContentPane(new GameMain());
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.pack();
-            frame.setLocationRelativeTo(null); // center the application window
-            frame.setVisible(true);            // show it
+   private int[] moveHard() {
+      int[] result = minimax(2, mySeed);
+      return new int[]{result[1], result[2]}; // row, col
+   }
+
+   private int[] minimax(int depth, Seed player) {
+      List<int[]> nextMoves = generateMoves();
+
+      int bestScore = (player == mySeed) ? Integer.MIN_VALUE : Integer.MAX_VALUE;
+      int currentScore;
+      int bestRow = -1;
+      int bestCol = -1;
+
+      if (nextMoves.isEmpty() || depth == 0) {
+         bestScore = evaluate();
+      } else {
+         for (int[] move : nextMoves) {
+            cells[move[0]][move[1]].content = player;
+            if (player == mySeed) {
+               currentScore = minimax(depth - 1, oppSeed)[0];
+               if (currentScore > bestScore) {
+                  bestScore = currentScore;
+                  bestRow = move[0];
+                  bestCol = move[1];
+               }
+            } else {
+               currentScore = minimax(depth - 1, mySeed)[0];
+               if (currentScore < bestScore) {
+                  bestScore = currentScore;
+                  bestRow = move[0];
+                  bestCol = move[1];
+               }
+            }
+            cells[move[0]][move[1]].content = Seed.NO_SEED;
          }
-      });
+      }
+      return new int[]{bestScore, bestRow, bestCol};
+   }
+
+   private List<int[]> generateMoves() {
+      List<int[]> nextMoves = new ArrayList<>();
+      if (hasWon(mySeed) || hasWon(oppSeed)) {
+         return nextMoves;
+      }
+
+      for (int row = 0; row < ROWS; ++row) {
+         for (int col = 0; col < COLS; ++col) {
+            if (cells[row][col].content == Seed.NO_SEED) {
+               nextMoves.add(new int[]{row, col});
+            }
+         }
+      }
+      return nextMoves;
+   }
+
+   private int evaluate() {
+      int score = 0;
+      score += evaluateLine(0, 0, 0, 1, 0, 2);  // row 0
+      score += evaluateLine(1, 0, 1, 1, 1, 2);  // row 1
+      score += evaluateLine(2, 0, 2, 1, 2, 2);  // row 2
+      score += evaluateLine(0, 0, 1, 0, 2, 0);  // col 0
+      score += evaluateLine(0, 1, 1, 1, 2, 1);  // col 1
+      score += evaluateLine(0, 2, 1, 2, 2, 2);  // col 2
+      score += evaluateLine(0, 0, 1, 1, 2, 2);  // diag
+      score += evaluateLine(0, 2, 1, 1, 2, 0);  // alt diag
+      return score;
+   }
+
+   private int evaluateLine(int row1, int col1, int row2, int col2, int row3, int col3) {
+      int score = 0;
+
+      if (cells[row1][col1].content == mySeed) {
+         score = 1;
+      } else if (cells[row1][col1].content == oppSeed) {
+         score = -1;
+      }
+
+      if (cells[row2][col2].content == mySeed) {
+         if (score == 1) {
+            score = 10;
+         } else if (score == -1) {
+            return 0;
+         } else {
+            score = 1;
+         }
+      } else if (cells[row2][col2].content == oppSeed) {
+         if (score == -1) {
+            score = -10;
+         } else if (score == 1) {
+            return 0;
+         } else {
+            score = -1;
+         }
+      }
+
+      if (cells[row3][col3].content == mySeed) {
+         if (score > 0) {
+            score *= 10;
+         } else if (score < 0) {
+            return 0;
+         } else {
+            score = 1;
+         }
+      } else if (cells[row3][col3].content == oppSeed) {
+         if (score < 0) {
+            score *= 10;
+         } else if (score > 1) {
+            return 0;
+         } else {
+            score = -1;
+         }
+      }
+      return score;
+   }
+
+   private int[] winningPatterns = {
+           0b111000000, 0b000111000, 0b000000111, // rows
+           0b100100100, 0b010010010, 0b001001001, // cols
+           0b100010001, 0b001010100               // diagonals
+   };
+
+   private boolean hasWon(Seed thePlayer) {
+      int pattern = 0b000000000;
+      for (int row = 0; row < ROWS; ++row) {
+         for (int col = 0; col < COLS; ++col) {
+            if (cells[row][col].content == thePlayer) {
+               pattern |= (1 << (row * COLS + col));
+            }
+         }
+      }
+      for (int wp : winningPatterns) {
+         if ((pattern & wp) == wp) return true;
+      }
+      return false;
    }
 }
