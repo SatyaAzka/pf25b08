@@ -10,5 +10,5 @@ public class tictactoejar {
 </applet>
 
     // ini nanti di file bentuk jar
-
+ee23
 }
