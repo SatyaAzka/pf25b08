@@ -37,9 +37,18 @@ public class GameMain extends JPanel {
 
             if (currentState == State.PLAYING) {
                if (row >= 0 && row < Board.ROWS && col >= 0 && col < Board.COLS
-                     && board.cells[row][col].content == Seed.NO_SEED) {
+                       && board.cells[row][col].content == Seed.NO_SEED) {
                   // Update cells[][] and return the new game state after the move
                   currentState = board.stepGame(currentPlayer, row, col);
+                  // Play appropriate sound clip
+                  if (currentState == State.PLAYING) {
+                     SoundEffect.EAT_FOOD.play();
+                  } else if (currentState == State.DRAW) {
+                     SoundEffect.EXPLODE.play();
+                  }
+                  else{
+                     SoundEffect.DIE.play();
+                  }
                   // Switch player
                   currentPlayer = (currentPlayer == Seed.CROSS) ? Seed.NOUGHT : Seed.CROSS;
                }
@@ -63,7 +72,7 @@ public class GameMain extends JPanel {
       super.setLayout(new BorderLayout());
       super.add(statusBar, BorderLayout.PAGE_END); // same as SOUTH
       super.setPreferredSize(new Dimension(Board.CANVAS_WIDTH, Board.CANVAS_HEIGHT + 30));
-            // account for statusBar in height
+      // account for statusBar in height
       super.setBorder(BorderFactory.createLineBorder(COLOR_BG_STATUS, 2, false));
 
       // Set up Game
@@ -92,22 +101,21 @@ public class GameMain extends JPanel {
    public void paintComponent(Graphics g) {  // Callback via repaint()
       super.paintComponent(g);
       setBackground(COLOR_BG); // set its background color
-
       board.paint(g);  // ask the game board to paint itself
 
       // Print status-bar message
       if (currentState == State.PLAYING) {
          statusBar.setForeground(Color.BLACK);
-         statusBar.setText((currentPlayer == Seed.CROSS) ? "X's Turn" : "O's Turn");
+         statusBar.setText((currentPlayer == Seed.CROSS) ? "Crocodilo's Turn" : "TungTungTungSahur's Turn");
       } else if (currentState == State.DRAW) {
          statusBar.setForeground(Color.RED);
          statusBar.setText("It's a Draw! Click to play again.");
       } else if (currentState == State.CROSS_WON) {
          statusBar.setForeground(Color.RED);
-         statusBar.setText("'X' Won! Click to play again.");
+         statusBar.setText("'Crocodilo' Won! Click to play again.");
       } else if (currentState == State.NOUGHT_WON) {
          statusBar.setForeground(Color.RED);
-         statusBar.setText("'O' Won! Click to play again.");
+         statusBar.setText("'TungTungSahur' Won! Click to play again.");
       }
    }
 
@@ -126,6 +134,4 @@ public class GameMain extends JPanel {
          }
       });
    }
-
-   
 }
