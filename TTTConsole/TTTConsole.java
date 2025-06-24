@@ -1,12 +1,10 @@
-package TTTConsoleNonOOV1_5_6;
-
 import java.util.Scanner;
 /**
  * Tic-Tac-Toe: Two-player, console-based, non-graphics, non-OO version.
  * All variables/methods are declared as static (i.e., class)
  *  in this non-OO version.
  */
-public class TTTConsoleOO {
+public class TTTConsole {
     // Define named constants for:
     //  1. Player: using CROSS and NOUGHT
     //  2. Cell contents: using CROSS, NOUGHT and NO_SEED
