@@ -8,7 +8,7 @@ public class LoginSystem {
     static final String USER = "avnadmin";
     static final String PASSWORD = "AVNS_0uiK4IIVGXGPHEr1r3G";
 
-    public static void main(String[] args) {
+    public static void Login() {
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              Scanner scanner = new Scanner(System.in)) {
 
