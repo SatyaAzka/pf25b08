@@ -84,7 +84,7 @@ public class TTTGraphics extends JFrame {
 
    public void initGame() {
       board = new Seed[ROWS][COLS];
-   }
+   } // initialize gamenya
 
    public void newGame() {
       for (int row = 0; row < ROWS; ++row) {

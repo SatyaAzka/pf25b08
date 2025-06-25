@@ -109,7 +109,7 @@ public class TTTConsoleNonOO {
         }
     }
 
-    /** Print the game board */
+    // game boardnya di buat
     public static void paintBoard() {
         for (int row = 0; row < ROWS; ++row) {
             for (int col = 0; col < COLS; ++col) {

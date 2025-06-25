@@ -102,7 +102,7 @@ public class AIPlayer {
         return nextMoves;
     }
 
-    private int evaluate() {
+    private int evaluate() { // Evaluasi
         int score = 0;
         score += evaluateLine(0, 0, 0, 1, 0, 2);  // row 0
         score += evaluateLine(1, 0, 1, 1, 1, 2);  // row 1

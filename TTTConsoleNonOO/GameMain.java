@@ -102,7 +102,7 @@ public class GameMain extends JPanel {
       newGame();
    }
 
-   private void initGame(AIPlayer.Difficulty difficulty) {
+   private void initGame(AIPlayer.Difficulty difficulty) { // initialize gamenya
       board = new Board();
       if (vsAI) {
          aiPlayer = new AIPlayer(board, difficulty);

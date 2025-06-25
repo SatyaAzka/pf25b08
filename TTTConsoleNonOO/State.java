@@ -1,3 +1,3 @@
 public enum State {
-    PLAYING, DRAW, CROSS_WON, NOUGHT_WON
+    PLAYING, DRAW, CROSS_WON, NOUGHT_WON // kondisi
 }

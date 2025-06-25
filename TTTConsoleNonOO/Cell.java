@@ -17,7 +17,7 @@ public class Cell {
    }
 
    public void paint(Graphics g) {
-      // ketika Seed nya tidak kosong nantinya
+
       int x1 = col * SIZE + PADDING;
       int y1 = row * SIZE + PADDING;
       if (content == Seed.CROSS || content == Seed.NOUGHT) {
