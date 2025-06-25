@@ -2,8 +2,8 @@ import java.awt.Image;
 import java.net.URL;
 import javax.swing.ImageIcon;
 
-public enum Seed {   // to save as "Seed.java"
-    CROSS("image/Heart", "image/Heart.png"),   // displayName, imageFilename
+public enum Seed {
+    CROSS("image/Heart", "image/Heart.png"),
     NOUGHT("image/Flowey", "image/Flowey.png"),
     NO_SEED(" ", null),
     Background2P("image/2PBackground", "image/2PBackground.gif"),
@@ -21,7 +21,7 @@ public enum Seed {   // to save as "Seed.java"
             ImageIcon icon = null;
             if (imgURL != null) {
                 icon = new ImageIcon(imgURL);
-                //System.out.println(icon);  // debugging
+                // debugging
             } else {
                 System.err.println("Couldn't find file " + imageFilename);
             }

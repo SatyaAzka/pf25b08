@@ -1,15 +1,16 @@
 import java.awt.*;
 public class Board {
-   // Define named constants
-   public static final int ROWS = 6;  // ROWS x COLS cells
-   public static final int COLS = 7;
-   // Define named constants for drawing
-   public static final int CANVAS_WIDTH = Cell.SIZE * COLS;  // the drawing canvas
+
+   // baris dan kolom
+   public static final int ROWS = 3;
+   public static final int COLS = 3;
+
+   public static final int CANVAS_WIDTH = Cell.SIZE * COLS;
    public static final int CANVAS_HEIGHT = Cell.SIZE * ROWS;
-   public static final int GRID_WIDTH = 8;  // Grid-line's width
-   public static final int GRID_WIDTH_HALF = GRID_WIDTH / 2; // Grid-line's half-width
-   public static final Color COLOR_GRID = Color.LIGHT_GRAY;  // grid lines
-   public static final int Y_OFFSET = 1;  // Fine tune for better display
+   public static final int GRID_WIDTH = 8;
+   public static final int GRID_WIDTH_HALF = GRID_WIDTH  2;
+   public static final Color COLOR_GRID = Color.LIGHT_GRAY;
+   public static final int Y_OFFSET = 1;
 
    Cell[][] cells;
 
@@ -18,12 +19,12 @@ public class Board {
    }
 
    public void initGame() {
-      cells = new Cell[ROWS][COLS]; // allocate the array
+      cells = new Cell[ROWS][COLS];
       for (int row = 0; row < ROWS; ++row) {
          for (int col = 0; col < COLS; ++col) {
 
             cells[row][col] = new Cell(row, col);
-            // Cells are initialized in the constructor
+
          }
       }
    }
@@ -31,7 +32,7 @@ public class Board {
    public void newGame() {
       for (int row = 0; row < ROWS; ++row) {
          for (int col = 0; col < COLS; ++col) {
-            cells[row][col].newGame(); // clear the cell content
+            cells[row][col].newGame();
          }
       }
    }
@@ -80,7 +81,7 @@ public class Board {
       }
       for (int row = 0; row < ROWS; ++row) {
          for (int col = 0; col < COLS; ++col) {
-            cells[row][col].paint(g);  // ask the cell to paint itself
+            cells[row][col].paint(g);
          }
       }
    }

@@ -22,10 +22,10 @@ public class LoginSystem {
                 String inputPassword = scanner.nextLine();
 
                 if (checkLogin(conn, inputUsername, inputPassword)) {
-                    System.out.println("✅ Login berhasil! Selamat datang, " + inputUsername + "!");
+                    System.out.println("Login berhasil! Selamat datang, " + inputUsername + "!");
                     loggedIn = true;
                 } else {
-                    System.out.println("❌ Username atau password salah. Coba lagi.\n");
+                    System.out.println("Username atau password salah. Coba lagi.\n");
                 }
             }
 
@@ -42,7 +42,7 @@ public class LoginSystem {
             stmt.setString(2, password);
 
             ResultSet rs = stmt.executeQuery();
-            return rs.next(); // kalau ada data → login benar
+            return rs.next();
 
         } catch (SQLException e) {
             System.err.println("Error saat query login: " + e.getMessage());
