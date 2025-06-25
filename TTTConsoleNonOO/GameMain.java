@@ -183,6 +183,8 @@ public class GameMain extends JPanel {
    }
 
    public static void main(String[] args) {
+      MySqlExample.KonekAiven();
+      LoginSystem.Login();
       SwingUtilities.invokeLater(() -> {
          String[] modeOptions = {"2 Player", "VS AI"};
          int modeChoice = JOptionPane.showOptionDialog(null, "Choose Game Mode",
