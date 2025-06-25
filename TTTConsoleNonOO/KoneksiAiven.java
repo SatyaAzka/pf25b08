@@ -26,7 +26,7 @@ import java.sql.SQLException;
                 System.out.println("Koneksi ke Aiven berhasil!");
                 conn.close();
             } catch (SQLException e) {
-                System.out.println("Koneksi gagal: " + e.getMessage());
+                System.out.println("Koneksi gagal: " + e.getMessage()); // Dapatkan message
             }
         }
     }
